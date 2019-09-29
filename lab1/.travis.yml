@@ -4,10 +4,6 @@ jdk: openjdk13
 # install:
 #   - mettre une commmande si nécessaire
 
-script:
-  - cd lab1
-  - mvn package
-
 os:
   - linux
   - osx
@@ -17,4 +13,7 @@ matrix:
   - name: "5.5.2 JUnit5"
     java: "openjdk13"
     env: TEST_SUITE=suite_3_5_unit
-script: ./test.py $TEST_SUITE
+
+script:
+  - cd lab1
+  - mvn package
