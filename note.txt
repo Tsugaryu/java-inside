@@ -1,0 +1,40 @@
+LAB1
+add a key ssh -keygen 
+Attention on envoie une clé publique
+
+Pour les 7 diapos à rendre : 
+note sur les commandes git = 1ere diapo
+
+pour utiliser facilement git depuis l'ordi, il est nécessaire d'utiliser la vue Git dans Eclipse (un peu comme quand on passe à la vue SVN ou JEE sur l'Eclipse du boulot)
+
+Lorsque une application tourne en arrière plan, (à l'auide de &); un id nous récupérons un id qui est précédé d'un identifiant entre crochet. 
+En utilisant la commande 
+fg %id
+on récupère l'usage du terminal et on quitte le processus qu'on avait lancé en arrière plan.
+
+env pour voir les variables d'environnement
+
+
+Quand un eclipse bug, 
+pour que maven fonctionne, il faut lui setter le java home donc il est nécessaire de faire 
+export JAVA_HOME=/home/ens/forax/java-inside/jdk-13
+
+Dans Eclipse pour ajouter, il faut faire clic droit-> team-> add index
+puis dans le mm endroit, faire commit ou ctrl # et cliquer sur le bouton push
+
+Si l'on effectue un switch sur des strings qui sont null on a une NPE
+
+Pour importer clic droit sur porjet puis import project
+Partie apprentissage sur maven
+
+Un fichier java project est un fichier .project qui dit qu'il est capable de builder du java
+
+
+Maven sert donc à builder
+				gérer les dépendances, les autres jars dont l'application dépend. Lorsqu'on ajoute des dépendances, les dépendances des dépendances sont aussi ajoutés. Cette action peut prendre du temps puisque dans la recherche de dépendance, maven vérifie que les vrsions correspondent, il est possible d'emp^echer que maven fasse des dépendance de dépendances
+Le pom décrit le projet sur lequel on trvl. Les dépendances sont recherchés sur Maven Central qui contient la majorité 
+Nexus
+
+On ecrit d'abord la description du projet (les infos de versions) puis les dépendances (dependences) et les règles de build (plugin)
+
+Lorsqu'on écrit nos test, il faut penser à utiliser les bons package(certains )
