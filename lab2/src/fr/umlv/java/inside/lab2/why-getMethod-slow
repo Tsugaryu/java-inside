@@ -1,0 +1,4 @@
+getMethods est lent car il renvoie un tableau d'élément mutable.
+Si l'on veut donc bien programmer et protéger ses classes, on effectue de la programmation défensive.
+Donc dès que l'on rencontre un élémeent mutable, on effectue une copie défensive.
+Ce qui explique la lenteur de getMethod

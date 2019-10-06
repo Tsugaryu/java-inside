@@ -12,7 +12,6 @@ matrix:
   include:
   - name: "5.5.2 JUnit5"
     java: "openjdk13"
-    env: TEST_SUITE=suite_3_5_unit
 
 script:
   - cd lab1

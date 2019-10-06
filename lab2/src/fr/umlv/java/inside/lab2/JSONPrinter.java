@@ -4,6 +4,12 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import static java.util.stream.Collectors.joining;
 public class JSONPrinter {
+	 private final static ClassValue<Method[]> cachedMethod = new ClassValue<>() {
+	        @Override
+	        protected Method[] computeValue(Class<?> getMethodResult) {
+	            return getMethodResult.getMethods();
+	        }
+	    };
 	  public static String toJSON(Person person) {
 		    return
 		        "{"+System.lineSeparator() +
@@ -14,19 +20,40 @@ public class JSONPrinter {
 	  private static String propertyName(String name) {
 	       return Character.toLowerCase(name.charAt(3)) + name.substring(4);
 	  }
-	  public static String toJSON(Object o) {
-		 return Arrays.stream(o.getClass().getMethods())
-		  		.filter(method->method.getName().startsWith("get"))
-		  		.map(method->JSONPrinter.propertyName(method.getName()))
-		  		.collect(joining(", ","{","}")); 
+	  private Object executeGetter(Object classe, Method method) {
+		  try {
+	      
+			  return method.invoke(classe);
+	        
+		  } catch (IllegalAccessException e) {
+	        	
+	            throw new IllegalStateException(e);
+	        
+	        } catch (InvocationTargetException e) {
+	          
+	        	var cause = e.getCause();
+	            
+	        	if ( cause instanceof RuntimeException ) {
+	            
+	        		throw (RuntimeException) cause;
+	            }
+	            
+	        	if ( cause instanceof Error ) {
+	            
+	        		throw (Error) cause;
+	            }
+	            throw new UndeclaredThrowableException(cause);
+	        }
 	  }
+	  public static String toJSON(Object o) {
+		  return Arrays.stream(o.getClass().getMethods())
+		  	.filter(method->method.getName().startsWith("get"))
+		  	.filter(method -> method.isAnnotationPresent(JSONProperty.class))
+		  	.map(method -> "\"" + JSONPrinter.propertyName(method.getName()) + "\": \"" + callGetter(o, method) + "\"")
+		  	.collect(joining(",","{","}")); 
+		  }
+	
 }
-/*
- * Écrire une méthode toJSON qui prend en paramètre un Object, 
- * utilise la réflexion pour accéder à l'ensemble des méthodes publiques de la classe de l'objet (Object.getClass()
- *  puis java.lang.Class.getMethods), sélectionne les getters, puis renvoie le nom des propriétés (pour l'instant).
-Le nom d'une propriété peut s'obtenir à partir du nom du getter en utilisant la fonction suivante (en supposant 
-que votre getter s'appelle bien getSomething):  
- * 
- * */
- 
+
+
+}
