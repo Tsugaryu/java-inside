@@ -138,13 +138,16 @@ qui renvoie 1 si le paramètre du méthode handle est bien égal (equals) à "fo
 	public void callingAnInstanceHelloTestByGuarding() throws Throwable{
 		var lookup= lookup();
 		var lookupInExample=privateLookupIn(Example.class, lookup);
-		var methodHandle=lookupInExample.findVirtual(Example.class, "anInstanceHello", methodType(String.class,int.class));
-		var methodAsType=methodHandle.asType( methodType(String.class,Example.class,Integer.class));
-		assertEquals(("question " +666), (String)	methodAsType.invokeExact(new Example(),Integer.valueOf(666)));
-		//invokeExact a maintenant 3 arguments eXAMPLE,sTRING,INT
-		MethodHandles.guardWithTest(test, target, fallback)
-		
+		var equalsMethodHandle=lookupInExample.findVirtual(String.class, "equals", methodType(boolean.class,Object.class));
+		var secondMethodHandle=dropArguments( MethodHandles.constant(int.class, 1), 0, String.class, Object.class);
+		var thirdMethodHandle=dropArguments( MethodHandles.constant(int.class, -1), 0, String.class, Object.class);
+		var guardMethodHandle = MethodHandles.guardWithTest(equalsMethodHandle, secondMethodHandle, thirdMethodHandle);
+		assertEquals(1, (int) MethodHandles.insertArguments(guardMethodHandle, 1, "foo").invoke("foo"));
+		assertEquals(-1, (int) MethodHandles.insertArguments(guardMethodHandle, 1, "foo").invoke("toto"));
 		}
+	
+	
+	
 }
 /*
 return Arrays.stream(o.getClass().getMethods())
